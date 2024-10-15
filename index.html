@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Countdown</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+    }
+    .person {
+      width: 100px;
+      transition: all 0.5s ease;
+    }
+    #boy {
+      position: absolute;
+      left: 0;
+    }
+    #girl {
+      position: absolute;
+      right: 0;
+    }
+    #married {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <img id="boy" src="boy.png" class="person" alt="Boy">
+  <img id="girl" src="girl.png" class="person" alt="Girl">
+  <div id="married">They are Married!</div>
+
+  <script>
+    const boy = document.getElementById('boy');
+    const girl = document.getElementById('girl');
+    const marriedMessage = document.getElementById('married');
+
+    const today = new Date();
+    const weddingDate = new Date('2025-02-03');
+    const totalDays = Math.ceil((weddingDate - today) / (1000 * 60 * 60 * 24));
+
+    function moveCharacters() {
+      const now = new Date();
+      const daysUntilWedding = Math.ceil((weddingDate - now) / (1000 * 60 * 60 * 24));
+      const progress = (totalDays - daysUntilWedding) / totalDays;
+
+      // Calculate new positions
+      boy.style.left = `${progress * 50}%`;
+      girl.style.right = `${progress * 50}%`;
+
+      // If it's the wedding day, show the married message
+      if (daysUntilWedding <= 0) {
+        boy.style.display = 'none';
+        girl.style.display = 'none';
+        marriedMessage.style.display = 'block';
+      }
+    }
+
+    // Update position every day (86,400,000 milliseconds = 1 day)
+    setInterval(moveCharacters, 86400000);
+
+    // Initial position update on load
+    moveCharacters();
+  </script>
+</body>
+</html>
